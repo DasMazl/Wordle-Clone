@@ -163,7 +163,7 @@ div.setting{
     gap: 1rem;
     padding: 1rem;
     max-height: 60vh;
-    scrollbar-width: none;
+    scrollbar-width: thin;
     overflow-y: auto;
 }
 
@@ -310,7 +310,8 @@ div.reset {
     text-align: center;
     border: 2px solid black;
     height: 3rem;
-    width: 20%;
+    width: max-content;
+    padding: 0 1rem;
     font-size: 1.5rem;
     border-radius: 10px;
     background-color: var(--bg-keys);
@@ -350,8 +351,5 @@ div.reset {
     div.enter, div.back{
         width: 55px;
         height: 45px;
-    }
-    #reset-button {
-        width: 40%;
     }
 }

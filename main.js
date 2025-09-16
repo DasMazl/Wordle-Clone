@@ -33,6 +33,8 @@ const backToSettings = () => {
     startMenu.classList.remove("hide");
     resumeButton.classList.remove("hide");
     menuButton.classList.add("hide");
+    resetKey.classList.add("hide");
+    resultText.classList.add("hide");
 }
 const getSolution = (lang, amount) => {
     fetch(`./wordlists/solutions-${lang}.json`)
