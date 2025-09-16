@@ -7,6 +7,7 @@ let selectedLang = "en";
 let selectedAmount = 5;
 let columns = 6;
 let filteredList;
+let valid;
 
 const keyboard = document.getElementById("keyboard");
 const keyboardRowOne = document.getElementById("keyboard-row1");
@@ -33,9 +34,8 @@ const backToSettings = () => {
     resumeButton.classList.remove("hide");
     menuButton.classList.add("hide");
 }
-
 const getSolution = (lang, amount) => {
-    fetch(`./wordlists/list-${lang}.json`)
+    fetch(`./wordlists/solutions-${lang}.json`)
     .then((res) => res.json())
     .then((data) => {
         filteredList = data.filter((word) => word.length === amount);
@@ -45,7 +45,6 @@ const getSolution = (lang, amount) => {
         solution = filteredList[randomIndex];
     })
 }
-
 const resetAll = () => {
     const allBoxes = document.querySelectorAll(".placeholder");
     const allKeys = document.querySelectorAll(".key");
@@ -70,9 +69,6 @@ const resetAll = () => {
     resultText.classList.remove("lost");
     resultText.textContent = "";
 }
-
-
-
 const renderPlaceholders = (amount) => {
     for(let i = 1; i <= columns; i++){
         placeholderContainer.innerHTML += `<div id="row${i}" class="row-container">`;
@@ -86,7 +82,6 @@ const renderPlaceholders = (amount) => {
     selectedAmount = amount;
     placeholderContainer.classList.remove("hide");
 }
-
 const initKeyboard = (lang) => {
     keyboardRowThree.innerHTML += `
         <div class="enter" id="enter-key">Enter</div>
@@ -126,7 +121,6 @@ const initKeyboard = (lang) => {
     `;
     keyboard.classList.remove("hide");
 }
-
 const addLetter = (letter) => {
     const currentRow = document.getElementById(`row${focus[0]}`);
     const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
@@ -137,7 +131,6 @@ const addLetter = (letter) => {
         focus[1]++;
     }
 }
-
 const warning = () => {
     const currentRow = document.querySelectorAll(`#row${focus[0]} > .placeholder`);
     currentRow.forEach((box) => {
@@ -145,7 +138,6 @@ const warning = () => {
         setTimeout(() => box.classList.remove("warning"), 400);
     })
 }
-
 const removeLetter = () => {
     const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
     if(focus[1] > 1 && !currentPlace.textContent){
@@ -154,21 +146,23 @@ const removeLetter = () => {
     const previousPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
     previousPlace.textContent = "";
 }
-
 async function isValidWord(word){
-    if(selectedLang === "en"){
-        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-        return res.ok; // true wenn Wort existiert}
-    } else {
-        return false;
-    }
+    await fetch(`./wordlists/valid-${selectedLang}.json`)
+    .then((res) => res.json())
+    .then((data) => {
+        let validList = data.filter((word) => word.length === selectedAmount);
+        validList = validList.map((item) => item.toLowerCase());
+        if(validList.includes(word)){
+            valid = true;
+        } else {
+               valid = false;
+        }
+    })
 }
-
 async function testEntry() {
     const currentRow = document.querySelectorAll(`#row${focus[0]} > .placeholder`);
     const answer = solution.split("");
     const userAnswer = [];
-    let valid = true;
     currentRow.forEach((box) => {
         if(!box.textContent){
             valid = false;
@@ -176,14 +170,11 @@ async function testEntry() {
         }
         userAnswer.push(box.textContent.toLowerCase());
     });
-    if(valid){
-    valid = await isValidWord(userAnswer.join(""));
     if(!valid){
-        valid = filteredList.includes(userAnswer.join(""));
-        console.log(valid);
-    }
-    }
+        return;}
+    await isValidWord(userAnswer.join(""));
     if(!valid){
+        console.log("warning");
         warning();
         return;
     }
@@ -222,7 +213,6 @@ async function testEntry() {
         
     }
 }
-
 const successScreen = () => {
 
     console.log("Success!");
@@ -234,7 +224,6 @@ const successScreen = () => {
     <span class="en">You won!</span><span class="de hide">Gewonnen!</span>
     `;
 }
-
 const lostScreen = () => {
     console.log("lost");
     keyboard.classList.add("hide");
@@ -245,7 +234,6 @@ const lostScreen = () => {
     <span class="en">You lost! Result: ${solution.toUpperCase()}</span><span class="de hide">Verloren! Lösung: ${solution.toUpperCase()}</span>
     `;
 }
-
 lengthSetting.addEventListener("input", () => {
     showcaseLength.textContent = lengthSetting.value;
     selectedAmount = Number(lengthSetting.value);
@@ -253,7 +241,6 @@ lengthSetting.addEventListener("input", () => {
     : selectedAmount < 8 ? columns = selectedAmount + 1
     : columns = 8;
 })
-
 playButton.addEventListener("click", () => {
     placeholderContainer.innerHTML = "";
     keyboardRowOne.innerHTML = "";
@@ -276,7 +263,6 @@ playButton.addEventListener("click", () => {
     enterKey.addEventListener("click", testEntry);
     resetKey.addEventListener("click", resetAll);
 })
-
 resumeButton.addEventListener("click", () => {
     keyboard.classList.remove("hide");
     placeholderContainer.classList.remove("hide");
@@ -303,6 +289,7 @@ deButton.addEventListener("click", () => {
     textEn.forEach((text) => text.classList.add("hide"));
     selectedLang = "de";
 })
+
 enButton.addEventListener("click", () => {
     enButton.classList.add("selected");
     deButton.classList.remove("selected");
