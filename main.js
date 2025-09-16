@@ -42,10 +42,8 @@ const getSolution = (lang, amount) => {
         filteredList = data.filter((word) => word.length === amount && regex.test(word));
         filteredList = filteredList.map((item) => item.toLowerCase());
 
-        console.log(filteredList);
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
-        solution = "blast";
     })
 }
 const resetAll = () => {
@@ -194,15 +192,15 @@ async function testEntry() {
                 count++;
                 answer[index] = "";
             }
+            
         }
     })
     userAnswer.forEach((value, index) => {
         if(answer.includes(value)){
-            if(value !== answer[index]){
-                answer[index] = "";
+                const valIndex = answer.indexOf(value);
+                answer[valIndex] = "";
                 currentRow[index].classList.add("hit");
                 document.getElementById(value).classList.add("hit");
-            }
         } else {
             currentRow[index].classList.add("wrong");
             document.getElementById(value).classList.add("wrong");
