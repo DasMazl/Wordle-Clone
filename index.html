@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Wordle - Mazl Edition</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1 id="headline" class="headline">Wordle - Mazl Edition</h1>
+        <div id="back-to-menu" class="hide">Back</div>
+    </header>
+    <main>
+        <div id="game-menu">
+            <h2>Settings</h2>
+            <div class="setting length">
+                <p>Choose your word length!</p>
+                <input type="range" id="length-setting" min="3" max="8" value="5" step="1">
+                <p id="show-length">5</p>
+            </div>
+            <div id="play-button" class="start-button">New Game</div>
+            <div id="resume-button" class="start-button hide">Resume Last</div>
+        </div>
+        <div id="placeholder-container" class="hide">
+        </div>
+        <div id="keyboard" class="hide">
+            <div id="keyboard-row1" class="keyboard-row-container">
+            </div>
+            <div id="keyboard-row2" class="keyboard-row-container">
+            </div>
+            <div id="keyboard-row3" class="keyboard-row-container">
+            </div>
+        </div>
+        <div class="reset hide" id="reset-container">
+            <p id="result-text" class=""></p>
+            <button type="button" class="" id="reset-button">Play again?</button>
+        </div>
+    </main>
+</body>
+</html>

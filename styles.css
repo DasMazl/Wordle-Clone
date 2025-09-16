@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: var(--font-base);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* END OF RESET */
+
+.hide {
+    display: none !important;
+}
+
+:root {
+    color-scheme: dark;
+    --text-base: light-dark(black, whitesmoke);
+    --bg-base: light-dark(whitesmoke, rgb(19, 19, 24));
+    --font-base: Lato, sans-serif;
+    --font-container: Roboto, sans-serif;
+    --success-color: hsl(133, 56%, 55%);
+    --hit-color: hsl(51, 56%, 69%);
+    --wrong-color: hsl(0, 0%, 30%);
+    --bg-keys: rgba(255, 255, 255, 0.034);
+    --lost-color: hsl(0, 100%, 74%);
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-base);
+}
+
+header {
+    height: max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+h1 {
+    opacity: 0.8;
+    margin-left: 1rem;
+}
+
+#back-to-menu {
+    display: block;
+    background-color: transparent;
+    height: 2rem;
+    width: 15%;
+    border: 1px solid black;
+    text-align: center;
+    align-content: center;
+    margin-right: 2rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+#back-to-menu:hover {
+    background-color: var(--bg-keys);
+    cursor: pointer;
+}
+
+div#game-menu {
+    margin-top: 4rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 2rem;
+}
+
+h2 {
+    font-size: 3rem;
+}
+
+div.setting.length{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+#length-setting {
+    margin-top: 2rem;
+    width: 20%;
+}
+
+#set-length {
+    font-size: 1.5rem;
+}
+
+.start-button {
+    background-color: var(--bg-keys);
+    color: var(--text-base);
+    font-size: 1.5rem;
+    height: 3.5rem;
+    width: 20%;
+    text-align: center;
+    align-content: center;
+    border-radius: 20px;
+    border: 2px solid black;
+    transition: all 0.2s ease;
+}
+
+#placeholder-container{
+    width: max-content;
+    margin: 1rem auto 2rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    padding: 1rem;
+    max-height: 60vh;
+    scrollbar-width: none;
+    overflow-y: auto;
+}
+
+div.row-container {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+div.placeholder {
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(119, 119, 119, 0.479);
+    background: transparent;
+    border-radius: 5px;
+    color: var(--text-base);
+    font-size: 2.5rem;
+    text-align: center;
+    align-content: center;
+    font-family: var(--font-container);
+    transition: border-color 0.4s ease;
+}
+
+div.placeholder.wrong {
+    border: 2px solid var(--wrong-color);
+    color: hsl(from var(--wrong-color) h s 60);
+}
+div.key.wrong {
+    border: 2px solid var(--wrong-color);
+    background-color: hsl(from var(--wrong-color) h 0 10);
+    color: hsl(from var(--text-base) h s 30);
+}
+div.placeholder.hit {
+    border: 2px solid var(--hit-color);
+    color: hsl(from var(--hit-color) h 40 90);
+}
+div.key.hit {
+    border: 2px solid var(--hit-color);
+    background-color: hsl(from var(--hit-color) h 50 60);
+    color: black;
+}
+div.placeholder.success {
+    border: 2px solid var(--success-color);
+    color: hsl(from var(--success-color) h 40 90);
+}
+div.key.success {
+    border: 2px solid var(--success-color);
+    background-color: hsl(from var(--success-color) h 50 60);
+    color: black;
+}
+
+#reset-button.success {
+    border: 2px solid var(--success-color);
+}
+
+#result-text.success {
+    color: var(--success-color);
+}
+
+
+
+#reset-button.lost {
+    border: 2px solid var(--lost-color);
+}
+
+#result-text.lost {
+    color: var(--lost-color);
+}
+
+div.placeholder.warning{
+    border-color: rgb(173, 88, 88) !important;
+}
+
+div#keyboard {
+    margin: 2rem auto 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+
+
+div.key {
+    width: 50px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 2rem;
+    text-align: center;
+    align-content: center;
+    font-family: var(--font-container);
+    background: var(--bg-keys);
+    color: var(--text-base);
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+div.key:hover, div.enter:hover, div.back:hover, .start-button:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+div.enter, div.back {
+    width: 80px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    align-content: center;
+    font-family: var(--font-container);
+    background: var(--bg-keys);
+    color: var(--text-base);
+    transition: all 0.2s ease;
+}
+
+div.back > svg {
+    height: 50%;
+    transform: translateY(2px);
+    fill: var(--text-base);
+}
+
+div.keyboard-row-container{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+div.reset {
+    text-align: center;
+    height: 30vh;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#reset-button {
+    text-align: center;
+    border: 2px solid black;
+    height: 3rem;
+    width: 20%;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    background-color: var(--bg-keys);
+    color: hsl(from var(--text-base) h s 80);
+    transition: all 0.2s ease;
+}
+
+#reset-button:hover {
+    background-color: hsl(from var(--bg-keys) h s 0);
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+@media (width < 720px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    #length-setting{
+        width: 40%;
+    }
+    .start-button{
+        width: 40%;
+    }
+    div.placeholder{
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    div.key{
+        width: 35px;
+        height: 45px;
+        font-size: 1rem;
+    }
+    div#keyboard {
+        gap: 0.5rem;
+    }
+    div.enter, div.back{
+        width: 55px;
+        height: 45px;
+    }
+    #reset-button {
+        width: 40%;
+    }
+}
