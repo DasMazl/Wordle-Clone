@@ -175,6 +175,7 @@ async function testEntry() {
         userAnswer.push(box.textContent.toLowerCase());
     });
     if(!valid){
+        warning();
         return;
     }
     await isValidWord(userAnswer.join(""));
