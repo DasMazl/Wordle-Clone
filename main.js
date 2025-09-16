@@ -38,11 +38,14 @@ const getSolution = (lang, amount) => {
     fetch(`./wordlists/solutions-${lang}.json`)
     .then((res) => res.json())
     .then((data) => {
-        filteredList = data.filter((word) => word.length === amount);
+        const regex = /^[a-zA-ZäöüÄÖÜß]+$/;
+        filteredList = data.filter((word) => word.length === amount && regex.test(word));
         filteredList = filteredList.map((item) => item.toLowerCase());
+
         console.log(filteredList);
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
+        solution = "blast";
     })
 }
 const resetAll = () => {
@@ -160,9 +163,11 @@ async function isValidWord(word){
     })
 }
 async function testEntry() {
+    valid = true;
     const currentRow = document.querySelectorAll(`#row${focus[0]} > .placeholder`);
     const answer = solution.split("");
     const userAnswer = [];
+    // Check every Box for Input
     currentRow.forEach((box) => {
         if(!box.textContent){
             valid = false;
@@ -171,10 +176,10 @@ async function testEntry() {
         userAnswer.push(box.textContent.toLowerCase());
     });
     if(!valid){
-        return;}
+        return;
+    }
     await isValidWord(userAnswer.join(""));
     if(!valid){
-        console.log("warning");
         warning();
         return;
     }
@@ -183,22 +188,26 @@ async function testEntry() {
 
     userAnswer.forEach((value, index) => {
         if(answer.includes(value)){
-            if(value == answer[index]){
+            if(value === answer[index]){
                 currentRow[index].classList.add("success");
                 document.getElementById(value).classList.add("success");
                 count++;
                 answer[index] = "";
-            } else {
+            }
+        }
+    })
+    userAnswer.forEach((value, index) => {
+        if(answer.includes(value)){
+            if(value !== answer[index]){
+                answer[index] = "";
                 currentRow[index].classList.add("hit");
                 document.getElementById(value).classList.add("hit");
             }
-            
         } else {
             currentRow[index].classList.add("wrong");
             document.getElementById(value).classList.add("wrong");
         }
     })
-
     if(count === selectedAmount){
         successScreen();
         return;
