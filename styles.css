@@ -100,7 +100,32 @@ h2 {
     font-size: 3rem;
 }
 
-div.setting.length{
+#language-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: 4rem;
+    font-size: 3rem;
+    justify-content: space-evenly;
+}
+
+div.lang-button {
+    opacity: 0.2;
+    transition: all 0.2s ease;
+}
+
+div.lang-button.selected {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.342);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+div.lang-button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+
+div.setting{
     width: 100%;
     display: flex;
     gap: 10px;

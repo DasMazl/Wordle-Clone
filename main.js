@@ -1,5 +1,5 @@
-const charEng = "QWERTYUIOPASDFGHJKLZXCVBNM";
-const charDe = "QWERTZUIOPÜASDFGHJKLÖÄYXCVBNM";
+const charEn = "QWERTYUIOPASDFGHJKLZXCVBNM";
+const charDe = "QWERTZUIOPÜßASDFGHJKLÖÄYXCVBNM";
 
 let focus = [1,1];
 let solution;
@@ -38,12 +38,11 @@ const getSolution = (lang, amount) => {
     fetch(`./wordlists/list-${lang}.json`)
     .then((res) => res.json())
     .then((data) => {
-        filteredList = data.filter((word) => word.length === amount)
+        filteredList = data.filter((word) => word.length === amount);
+        filteredList = filteredList.map((item) => item.toLowerCase());
+        console.log(filteredList);
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
-       /*  console.log(data);
-        console.log(filteredList);
-        console.log(solution); */
     })
 }
 
@@ -92,31 +91,33 @@ const initKeyboard = (lang) => {
     keyboardRowThree.innerHTML += `
         <div class="enter" id="enter-key">Enter</div>
     `;
-    if(lang === "en"){
-        for(let i = 0; i < charEng.length; i++){
-            i < 10 ? keyboardRowOne.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}">${charEng.charAt(i)}</div>
-                `
-            : i < 19 ? keyboardRowTwo.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}">${charEng.charAt(i)}</div>
-                `
-            : keyboardRowThree.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}">${charEng.charAt(i)}</div>
-                `;
-        }
-        
-    } else if(lang ==="de"){
-        for(let i = 0; i < charDe.length; i++){
-            i < 11 ? keyboardRowOne.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}>${charDe.charAt(i)}</div>
-                `
-            : i < 22 ? keyboardRowTwo.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}>${charDe.charAt(i)}</div>
-                `
-            : keyboardRowThree.innerHTML +=`
-                <div class="key" id="${charEng.charAt(i).toLowerCase()}>${charDe.charAt(i)}</div>
-                `;
-        }
+    switch(lang){
+        case "en":
+            for(let i = 0; i < charEn.length; i++){
+                i < 10 ? keyboardRowOne.innerHTML +=`
+                    <div class="key" id="${charEn.charAt(i).toLowerCase()}">${charEn.charAt(i)}</div>
+                    `
+                : i < 19 ? keyboardRowTwo.innerHTML +=`
+                    <div class="key" id="${charEn.charAt(i).toLowerCase()}">${charEn.charAt(i)}</div>
+                    `
+                : keyboardRowThree.innerHTML +=`
+                    <div class="key" id="${charEn.charAt(i).toLowerCase()}">${charEn.charAt(i)}</div>
+                    `;
+            }
+            break;
+        case "de":
+            for(let i = 0; i < charDe.length; i++){
+                i < 12 ? keyboardRowOne.innerHTML +=`
+                    <div class="key" id="${charDe.charAt(i).toLowerCase()}">${charDe.charAt(i)}</div>
+                    `
+                : i < 23 ? keyboardRowTwo.innerHTML +=`
+                    <div class="key" id="${charDe.charAt(i).toLowerCase()}">${charDe.charAt(i)}</div>
+                    `
+                : keyboardRowThree.innerHTML +=`
+                    <div class="key" id="${charDe.charAt(i).toLowerCase()}">${charDe.charAt(i)}</div>
+                    `;
+            }
+            break;
     }
     keyboardRowThree.innerHTML += `
         <div class="back" id="back-key">
@@ -155,9 +156,12 @@ const removeLetter = () => {
 }
 
 async function isValidWord(word){
-    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    console.log(res.ok);
-    return res.ok; // true wenn Wort existiert
+    if(selectedLang === "en"){
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        return res.ok; // true wenn Wort existiert}
+    } else {
+        return false;
+    }
 }
 
 async function testEntry() {
@@ -173,9 +177,10 @@ async function testEntry() {
         userAnswer.push(box.textContent.toLowerCase());
     });
     if(valid){
-    valid = await isValidWord(userAnswer.join("").toLowerCase());
+    valid = await isValidWord(userAnswer.join(""));
     if(!valid){
-        valid = filteredList.includes(userAnswer.join("").toLowerCase());
+        valid = filteredList.includes(userAnswer.join(""));
+        console.log(valid);
     }
     }
     if(!valid){
@@ -191,14 +196,12 @@ async function testEntry() {
                 currentRow[index].classList.add("success");
                 document.getElementById(value).classList.add("success");
                 count++;
+                answer[index] = "";
             } else {
                 currentRow[index].classList.add("hit");
                 document.getElementById(value).classList.add("hit");
             }
-            const indexChar = answer.indexOf(value);
-            answer[indexChar] = "";
-            console.log(answer);
-            console.log(indexChar);
+            
         } else {
             currentRow[index].classList.add("wrong");
             document.getElementById(value).classList.add("wrong");
@@ -227,7 +230,9 @@ const successScreen = () => {
     resetContainer.classList.remove("hide");
     resetKey.classList.add("success");
     resultText.classList.add("success");
-    resultText.textContent = "You won!";
+    resultText.innerHTML = `
+    <span class="en">You won!</span><span class="de hide">Gewonnen!</span>
+    `;
 }
 
 const lostScreen = () => {
@@ -236,7 +241,9 @@ const lostScreen = () => {
     resetContainer.classList.remove("hide");
     resultText.classList.add("lost");
     resetKey.classList.add("lost");
-    resultText.textContent = `You lost! Result: ${solution.toUpperCase()}`;
+    resultText.innerHTML = `
+    <span class="en">You lost! Result: ${solution.toUpperCase()}</span><span class="de hide">Verloren! Lösung: ${solution.toUpperCase()}</span>
+    `;
 }
 
 lengthSetting.addEventListener("input", () => {
@@ -284,3 +291,22 @@ menuButton.addEventListener("click", () => {
     backToSettings();
 })
 
+const textDe = document.querySelectorAll("span.de");
+const textEn = document.querySelectorAll("span.en");
+const deButton = document.getElementById("language-german");
+const enButton = document.getElementById("language-english");
+
+deButton.addEventListener("click", () => {
+    enButton.classList.remove("selected");
+    deButton.classList.add("selected");
+    textDe.forEach((text) => text.classList.remove("hide"));
+    textEn.forEach((text) => text.classList.add("hide"));
+    selectedLang = "de";
+})
+enButton.addEventListener("click", () => {
+    enButton.classList.add("selected");
+    deButton.classList.remove("selected");
+    textDe.forEach((text) => text.classList.add("hide"));
+    textEn.forEach((text) => text.classList.remove("hide"));
+    selectedLang = "en";
+})

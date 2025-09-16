@@ -11,18 +11,25 @@
 <body>
     <header>
         <h1 id="headline" class="headline">Wordle - Mazl Edition</h1>
-        <div id="back-to-menu" class="hide">Back</div>
+        <div id="back-to-menu" class="hide"><span class="en">Back</span><span class="de hide">Zurück</span></div>
     </header>
     <main>
         <div id="game-menu">
-            <h2>Settings</h2>
+            <h2><span class="en">Settings</span><span class="de hide">Einstellungen</span></h2>
+            <div class="setting language">
+                <p><span class="en">Choose your language</span><span class="de hide">Wähle eine Sprache</span></p>
+                <div id="language-container">
+                   <div id="language-german" class="lang-button">🇩🇪</div>
+                   <div id="language-english" class="lang-button selected">🇺🇸</div>
+                </div>
+            </div>
             <div class="setting length">
-                <p>Choose your word length!</p>
+                <p><span class="en">Choose your word length</span><span class="de hide">Wähle die Länge des Wortes</span></p>
                 <input type="range" id="length-setting" min="3" max="8" value="5" step="1">
                 <p id="show-length">5</p>
             </div>
-            <div id="play-button" class="start-button">New Game</div>
-            <div id="resume-button" class="start-button hide">Resume Last</div>
+            <div id="play-button" class="start-button"><span class="en">New Game</span><span class="de hide">Neues Spiel</span></div>
+            <div id="resume-button" class="start-button hide"><span class="en">Continue</span><span class="de hide">Fortsetzen</span></div>
         </div>
         <div id="placeholder-container" class="hide">
         </div>
@@ -36,7 +43,7 @@
         </div>
         <div class="reset hide" id="reset-container">
             <p id="result-text" class=""></p>
-            <button type="button" class="" id="reset-button">Play again?</button>
+            <button type="button" class="" id="reset-button"><span class="en">Play again</span><span class="de hide">Nochmal spielen</span></button>
         </div>
     </main>
 </body>
