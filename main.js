@@ -195,22 +195,17 @@ async function testEntry() {
                 count++;
                 answer[index] = "";
             }
-            
-        }
-        
+        } 
     })
-    console.log(answer);
-    console.log(userAnswer);
     userAnswer.forEach((value, index) => {
         if(answer.includes(value)){
-                
-                if(!currentRow[index].classList.contains("success")){
-                    const valIndex = answer.indexOf(value);
-                    answer[valIndex] = "";
-                    currentRow[index].classList.add("hit");
-                }
+            if(!currentRow[index].classList.contains("success")){
+                const valIndex = answer.indexOf(value);
+                answer[valIndex] = "";
+                currentRow[index].classList.add("hit");
                 document.getElementById(value).classList.add("hit");
-        } else {
+            } 
+        } else if(!currentRow[index].classList.contains("success")){
             currentRow[index].classList.add("wrong");
             document.getElementById(value).classList.add("wrong");
         }
@@ -230,25 +225,39 @@ async function testEntry() {
     }
 }
 const successScreen = () => {
-
-    console.log("Success!");
     keyboard.classList.add("hide");
     resetContainer.classList.remove("hide");
     resetKey.classList.add("success");
     resultText.classList.add("success");
-    resultText.innerHTML = `
-    <span class="en">You won!</span><span class="de hide">Gewonnen!</span>
-    `;
+    switch(selectedLang){
+        case "de":
+             resultText.innerHTML = `
+            <span class="de">Gewonnen!</span>
+            `;
+            break;
+        default:
+            resultText.innerHTML = `
+            <span class="en">You won!</span>
+            `;
+    }
+    
 }
 const lostScreen = () => {
-    console.log("lost");
     keyboard.classList.add("hide");
     resetContainer.classList.remove("hide");
     resultText.classList.add("lost");
     resetKey.classList.add("lost");
-    resultText.innerHTML = `
-    <span class="en">You lost! Result: ${solution.toUpperCase()}</span><span class="de hide">Verloren! Lösung: ${solution.toUpperCase()}</span>
-    `;
+    switch(selectedLang){
+        case "de":
+            resultText.innerHTML = `
+            <span class="de">Verloren! Lösung: ${solution.toUpperCase()}</span>
+            `;
+            break;
+        default:
+            resultText.innerHTML = `
+            <span class="en">You lost! Result: ${solution.toUpperCase()}</span>
+            `;
+    }
 }
 lengthSetting.addEventListener("input", () => {
     showcaseLength.textContent = lengthSetting.value;
