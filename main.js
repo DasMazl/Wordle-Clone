@@ -161,7 +161,6 @@ async function isValidWord(word){
     })
 }
 async function testEntry() {
-    valid = true;
     const currentRow = document.querySelectorAll(`#row${focus[0]} > .placeholder`);
     const answer = solution.split("");
     const userAnswer = [];
@@ -170,6 +169,8 @@ async function testEntry() {
         if(!box.textContent){
             valid = false;
             return;
+        } else {
+            valid = true;
         }
         userAnswer.push(box.textContent.toLowerCase());
     });
@@ -177,6 +178,7 @@ async function testEntry() {
         return;
     }
     await isValidWord(userAnswer.join(""));
+
     if(!valid){
         warning();
         return;
