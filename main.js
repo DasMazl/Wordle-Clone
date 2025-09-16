@@ -197,12 +197,18 @@ async function testEntry() {
             }
             
         }
+        
     })
+    console.log(answer);
+    console.log(userAnswer);
     userAnswer.forEach((value, index) => {
         if(answer.includes(value)){
-                const valIndex = answer.indexOf(value);
-                answer[valIndex] = "";
-                currentRow[index].classList.add("hit");
+                
+                if(!currentRow[index].classList.contains("success")){
+                    const valIndex = answer.indexOf(value);
+                    answer[valIndex] = "";
+                    currentRow[index].classList.add("hit");
+                }
                 document.getElementById(value).classList.add("hit");
         } else {
             currentRow[index].classList.add("wrong");
