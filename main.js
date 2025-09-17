@@ -78,6 +78,7 @@ const resetAll = () => {
     resultText.classList.remove("success");
     resultText.classList.remove("lost");
     resultText.textContent = "";
+    setFocus();
 }
 const renderPlaceholders = (amount) => {
     for(let i = 1; i <= columns; i++){
@@ -105,6 +106,19 @@ const renderPlaceholders = (amount) => {
     placeholderContainer.classList.remove("hide");
     initArrows();
     setFocus();
+    const allPlaceholders = document.querySelectorAll(".placeholder");
+    allPlaceholders.forEach((box) => {
+        const rowId = Number(box.id.slice(15, 16));
+        const placeId = Number(box.id.slice(-1));
+        box.addEventListener("click", (e) => {
+            if(rowId === focus[0]){
+                removeFocus();
+                focus[1] = placeId;
+                
+                setFocus();
+            }
+        })
+    })
 }
 const initArrows = () => {
     const arrows = document.querySelectorAll(".arrow-selector");
