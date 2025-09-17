@@ -370,6 +370,7 @@ div.reset {
 
 
 @media (width > 720px) {
+    
     #back-to-menu:hover {
         background-color: var(--bg-keys);
         cursor: pointer;
