@@ -7,7 +7,7 @@ let selectedLang = "en";
 let selectedAmount = 5;
 let columns = 6;
 let filteredList;
-let valid;
+let isValid;
 
 const keyboard = document.getElementById("keyboard");
 const keyboardRowOne = document.getElementById("keyboard-row1");
@@ -40,7 +40,14 @@ const getSolution = (lang, amount) => {
     fetch(`./wordlists/solutions-${lang}.json`)
     .then((res) => res.json())
     .then((data) => {
-        const regex = /^[a-zA-ZäöüÄÖÜß]+$/;
+        let regex;
+        switch(selectedLang){
+            case "de":
+                regex = /^[a-zA-ZäöüÄÖÜß]+$/;
+                break;
+            default:
+                regex = /^[a-zA-Z]+$/;
+        };
         filteredList = data.filter((word) => word.length === amount && regex.test(word));
         filteredList = filteredList.map((item) => item.toLowerCase());
 
@@ -61,7 +68,8 @@ const resetAll = () => {
         key.classList.remove("success");
         key.classList.remove("hit");
         key.classList.remove("wrong");
-    })
+    })   
+    removeFocus();
     focus = [1, 1];
     solution = getSolution(selectedLang, selectedAmount);
     keyboard.classList.remove("hide");
@@ -74,17 +82,42 @@ const resetAll = () => {
 }
 const renderPlaceholders = (amount) => {
     for(let i = 1; i <= columns; i++){
-        placeholderContainer.innerHTML += `<div id="row${i}" class="row-container">`;
+        placeholderContainer.innerHTML += `
+        <div id="row${i}" class="row-container"></div>
+        `;
     }
     const rowContainers = document.querySelectorAll("div.row-container");
     rowContainers.forEach((container) => {
+        container.innerHTML += `
+            <div id="arrow-left-${container.id}" class="arrow-selector left hide">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/></svg>
+            </div>
+        `;
         for(let j = 1; j <= amount; j++){
             container.innerHTML += `<div class="placeholder" id="placeholder-${container.id}-place${j}"></div>`;
         }
+        container.innerHTML += `
+            <div id="arrow-right-${container.id}" class="arrow-selector right hide">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z"/></svg>
+            </div>
+        `;
     })
     selectedAmount = amount;
     placeholderContainer.classList.remove("hide");
+    initArrows();
+    setFocus();
 }
+const initArrows = () => {
+    const arrows = document.querySelectorAll(".arrow-selector");
+    arrows.forEach((arrow) => {
+        if(arrow.classList.contains("left")){
+            arrow.addEventListener("click", () => moveFocus("left"));
+        }else{
+            arrow.addEventListener("click", () => moveFocus("right"));
+        }
+    })
+}
+
 const initKeyboard = (lang) => {
     keyboardRowThree.innerHTML += `
         <div class="enter" id="enter-key">Enter</div>
@@ -124,14 +157,77 @@ const initKeyboard = (lang) => {
     `;
     keyboard.classList.remove("hide");
 }
-const addLetter = (letter) => {
+
+const setFocus = () => {
     const currentRow = document.getElementById(`row${focus[0]}`);
     const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
-    if(focus[1] === selectedAmount){
-        currentPlace.textContent ? warning() : currentPlace.textContent = letter;
+    const leftArrow = document.getElementById(`arrow-left-row${focus[0]}`);
+    const rightArrow = document.getElementById(`arrow-right-row${focus[0]}`);
+    rightArrow.classList.remove("hide");
+    leftArrow.classList.remove("hide");
+    currentPlace.classList.add("focus");
+    currentRow.classList.add("focus");
+}
+
+const removeFocus = () => {
+    const currentRow = document.getElementById(`row${focus[0]}`);
+    const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+    const leftArrow = document.getElementById(`arrow-left-row${focus[0]}`);
+    const rightArrow = document.getElementById(`arrow-right-row${focus[0]}`);
+    rightArrow.classList.add("hide");
+    leftArrow.classList.add("hide");
+    currentPlace.classList.remove("focus");
+    currentRow.classList.remove("focus")
+}
+
+const moveFocus = (dir) => {
+    removeFocus();
+    switch(dir){
+        case "left":
+           if(focus[1] > 1){               
+                focus[1]--;
+            } else {
+                focus[1] = selectedAmount;
+            }
+            break;
+        case "right":
+            if(focus[1] < selectedAmount){  
+                focus[1]++;
+            } else {
+                focus[1] = 1;
+            }
+            break;
+        default:
+            return;
+    }
+    setFocus();
+}
+
+const addLetter = (letter) => {
+    const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+    if(currentPlace.textContent){
+        currentPlace.textContent = letter;
+        return;
     } else {
         currentPlace.textContent = letter;
-        focus[1]++;
+        removeFocus();
+        let nextPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+        let tempFocus = focus[1];
+        while(nextPlace.textContent){
+            if(focus[1] < selectedAmount){
+                focus[1]++;
+                nextPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+            } else if(focus[1] === selectedAmount){
+                focus[1] = 1;
+                nextPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+            } else {
+                break;
+            }
+            if(focus[1] === tempFocus){
+                break;
+            }
+        }
+        setFocus();
     }
 }
 const warning = () => {
@@ -143,9 +239,11 @@ const warning = () => {
 }
 const removeLetter = () => {
     const currentPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
+    removeFocus();
     if(focus[1] > 1 && !currentPlace.textContent){
         focus[1]--;
     }
+    setFocus();
     const previousPlace = document.getElementById(`placeholder-row${focus[0]}-place${focus[1]}`);
     previousPlace.textContent = "";
 }
@@ -156,9 +254,9 @@ async function isValidWord(word){
         let validList = data.filter((word) => word.length === selectedAmount);
         validList = validList.map((item) => item.toLowerCase());
         if(validList.includes(word)){
-            valid = true;
+            isValid = true;
         } else {
-               valid = false;
+            isValid = false;
         }
     })
 }
@@ -169,20 +267,20 @@ async function testEntry() {
     // Check every Box for Input
     currentRow.forEach((box) => {
         if(!box.textContent){
-            valid = false;
+            isValid = false;
             return;
         } else {
-            valid = true;
+            isValid = true;
         }
         userAnswer.push(box.textContent.toLowerCase());
     });
-    if(!valid){
+    if(!isValid){
         warning();
         return;
     }
     await isValidWord(userAnswer.join(""));
 
-    if(!valid){
+    if(!isValid){
         warning();
         return;
     }
@@ -220,8 +318,10 @@ async function testEntry() {
             lostScreen();
             return;
         }
+        removeFocus();
         focus[0]++;
         focus[1] = 1;
+        setFocus();
         return;
         
     }
@@ -243,6 +343,42 @@ const successScreen = () => {
             `;
     }
     
+}
+const keyInput = (e) => {
+    if(!keyboard.classList.contains("hide")){
+        let regex;
+        switch(selectedLang){
+            case "de":
+                regex = /^[a-zA-ZäöüÄÖÜß]$/;
+                break;
+            default:
+                regex = /^[a-zA-Z]$/;
+        }  
+        if(regex.test(e.key)){
+            e.key === "ss" ? addLetter("ß") : addLetter(e.key.toUpperCase());
+            return;
+        }
+        switch(e.key){
+            case "Enter":
+                testEntry();
+                break;
+            case "Backspace":
+                removeLetter();
+                break;
+            case "ArrowLeft":
+                removeFocus();
+                moveFocus("left");
+                setFocus();
+                break;
+            case "ArrowRight":
+                removeFocus();
+                moveFocus("right");
+                setFocus();
+                break;
+            default:
+                return;
+        }
+    }; 
 }
 const lostScreen = () => {
     keyboard.classList.add("hide");
@@ -275,16 +411,16 @@ playButton.addEventListener("click", () => {
     keyboardRowThree.innerHTML = "";
     startMenu.classList.add("hide");
     menuButton.classList.remove("hide");
+    focus = [1, 1];
     renderPlaceholders(selectedAmount);
     initKeyboard(selectedLang);
-    focus = [1, 1];
     solution = getSolution(selectedLang, selectedAmount);
     const keys = document.querySelectorAll(".key");
     const deleteKey = document.getElementById("back-key");
     const enterKey = document.getElementById("enter-key");
 
-    keys.forEach((key) => {
-        key.addEventListener("click", () => addLetter(key.textContent));
+    keys.forEach((letter) => {
+        letter.addEventListener("click", () => addLetter(letter.textContent));
     });
     deleteKey.addEventListener("click", removeLetter);
     enterKey.addEventListener("click", testEntry);
@@ -297,7 +433,7 @@ resumeButton.addEventListener("click", () => {
     resumeButton.classList.add("hide");
     menuButton.classList.remove("hide");
 })
-
+document.addEventListener("keydown", (e) => keyInput(e));
 const menuButton = document.getElementById("back-to-menu");
 
 menuButton.addEventListener("click", () => {

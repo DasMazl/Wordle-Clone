@@ -156,7 +156,7 @@ div.setting{
 }
 
 #placeholder-container{
-    width: max-content;
+    width: clamp(350px, 80vw, 900px);
     margin: 1rem auto 2rem;
     display: flex;
     flex-flow: column nowrap;
@@ -165,10 +165,13 @@ div.setting{
     max-height: 60vh;
     scrollbar-width: thin;
     overflow-y: auto;
+    align-items: center;
 }
 
 div.row-container {
+    width: max-content;
     display: flex;
+    position: relative;
     flex-flow: row nowrap;
     gap: 1rem;
     justify-content: center;
@@ -185,7 +188,70 @@ div.placeholder {
     text-align: center;
     align-content: center;
     font-family: var(--font-container);
-    transition: border-color 0.4s ease;
+    transition: border-color 0.2s ease;
+    }
+
+div.arrow-selector{
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: calc(50% - 30px);
+    fill: hsl(159, 15%, 34%);
+    transition: all 0.2s ease;
+}
+
+div.arrow-selector:hover{
+    fill: hsl(159, 15%, 80%);
+}
+
+div.arrow-selector.left{
+    left: -55px;
+    animation: 3s infinite arrow-left-animation;
+}
+
+div.arrow-selector.right{
+    right: -55px;
+    animation: 3s infinite arrow-right-animation;
+}
+
+@keyframes arrow-left-animation {
+    0% {
+        transform: translateX(0px) scale(0.5);
+    }
+    50% {
+        transform: translateX(-5px) scale(0.5);
+    }
+    100% {
+        transform: translateX(0px) scale(0.5);
+    }
+}
+@keyframes arrow-right-animation {
+    0% {
+        transform: translateX(0px) scale(0.5);
+    }
+    50% {
+        transform: translateX(5px) scale(0.5);
+    }
+    100% {
+        transform: translateX(0px) scale(0.5);
+    }
+}
+
+div.placeholder.focus {
+    transform: scale(1.1);
+    border: 2px solid rgb(48, 196, 255);
+}
+
+.row-container.focus {
+    border: 1px dashed rgba(245, 245, 245, 0.445);
+    padding: 15px 20px;
+    border-radius: 20px;
+    transform: scale(1.1);
+    background-color: rgba(245, 245, 245, 0.021);
+}
+
+.row-container.focus div.placeholder:not(.focus){
+    border: 2px solid whitesmoke;
 }
 
 div.placeholder.wrong {
@@ -193,16 +259,16 @@ div.placeholder.wrong {
     color: hsl(from var(--wrong-color) h s 60);
 }
 div.key.wrong {
-    border: 2px solid var(--wrong-color);
-    background-color: hsl(from var(--wrong-color) h 0 10);
-    color: hsl(from var(--text-base) h s 30);
+    border: 2px solid hsl(from var(--wrong-color) h 0 90);
+    background-color: hsl(from var(--wrong-color) h 0 30);
+    color: hsl(from var(--text-base) h s 0);
 }
 div.placeholder.hit {
     border: 2px solid var(--hit-color);
     color: hsl(from var(--hit-color) h 40 90);
 }
 div.key.hit {
-    border: 2px solid var(--hit-color);
+    border: 2px solid hsl(from var(--hit-color) h 100 90);
     background-color: hsl(from var(--hit-color) h 50 60);
     color: black;
 }
@@ -211,7 +277,7 @@ div.placeholder.success {
     color: hsl(from var(--success-color) h 40 90);
 }
 div.key.success {
-    border: 2px solid var(--success-color);
+    border: 2px solid hsl(from var(--success-color) h 100 60);
     background-color: hsl(from var(--success-color) h 50 60);
     color: black;
 }
@@ -239,7 +305,7 @@ div.placeholder.warning{
 }
 
 div#keyboard {
-    margin: 2rem auto 1rem;
+    margin: auto auto;
     display: flex;
     flex-flow: column nowrap;
     gap: 1rem;
@@ -340,13 +406,17 @@ div.reset {
         height: 35px;
         font-size: 1rem;
     }
+    .row-container.focus{
+        transform: scale(1);
+        padding: 10px 15px;
+    }
     div.key{
-        width: 35px;
+        width: 40px;
         height: 45px;
-        font-size: 1rem;
+        font-size: 1.4rem;
     }
     div#keyboard {
-        gap: 0.5rem;
+        gap: 5px;
     }
     div.enter, div.back{
         width: 55px;

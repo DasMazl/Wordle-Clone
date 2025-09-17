@@ -10,3 +10,12 @@ Type in the letters per row. You can only use valid words (determined by a valid
 If a letter is in its correct spot, it will turn green. If a letter is contained in the solution, but not on the correct spot, it will turn yellow. If the letter is not included at all it turns grey.
 
 If you find any bugs please keep me posted! Always happy to hear suggestions.
+
+Changelog:
+
+17.09.2025:
+
+- Added keyboard input for letters, "Enter", "Backspace", Left and Right Arrow Key.
+- Added possiblity to select boxes individually.
+- Added visual focus of individuell boxes + current row.
+- Added on display Arrow Keys to select boxes on mobile.
