@@ -254,7 +254,7 @@ div.placeholder.focus {
     border: 2px solid whitesmoke;
 }
 
-div.placeholder.wrong {
+div.placeholder.wrong.reveal {
     border: 2px solid var(--wrong-color) !important;
     color: hsl(from var(--wrong-color) h s 60) !important;
 }
@@ -263,7 +263,7 @@ div.key.wrong {
     background-color: hsl(from var(--wrong-color) h 0 30);
     color: hsl(from var(--text-base) h s 0);
 }
-div.placeholder.hit {
+div.placeholder.hit.reveal {
     border: 2px solid var(--hit-color) !important;
     color: hsl(from var(--hit-color) h 40 90) !important;
 }
@@ -272,7 +272,7 @@ div.key.hit {
     background-color: hsl(from var(--hit-color) h 50 60);
     color: black;
 }
-div.placeholder.success {
+div.placeholder.success.reveal {
     border: 2px solid var(--success-color) !important;
     color: hsl(from var(--success-color) h 40 90) !important;
 }

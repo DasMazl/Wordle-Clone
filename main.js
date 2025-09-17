@@ -310,6 +310,28 @@ async function testEntry() {
             document.getElementById(value).classList.add("wrong");
         }
     })
+    for(let i = 0; i < selectedAmount; i++){
+        setTimeout(() => {
+            currentRow[i].animate({
+                transform: ["rotateX(0deg)", "rotateX(90deg)", "rotateX(-90deg)", "rotateX(0deg)"],
+                offset: [0, 0.5, 0.5],
+                easing: ["ease-in", "linear", "linear", "ease-out"],
+            }, 1000);   
+            setTimeout(() => currentRow[i].classList.add("reveal"), 500);
+        }, 100 * i);
+    }
+
+
+
+   /*  currentRow.forEach((box) => {
+        box.animate({
+            transform: ["rotateX(0deg)", "rotateX(90deg)", "rotateX(-90deg)", "rotateX(0deg)"],
+            offset: [0, 0.5, 0.5],
+            easing: ["ease-in", "linear", "linear", "ease-out"],
+        }, 1000);   
+        setTimeout(() => box.classList.add("reveal"), 500); 
+        
+    })*/
     if(count === selectedAmount){
         successScreen();
         removeFocus();
@@ -327,6 +349,7 @@ async function testEntry() {
         return;
         
     }
+   
 }
 const successScreen = () => {
     keyboard.classList.add("hide");
