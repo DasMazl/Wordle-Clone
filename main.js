@@ -15,8 +15,8 @@ const keyboardRowTwo = document.getElementById("keyboard-row2");
 const keyboardRowThree = document.getElementById("keyboard-row3");
 
 const placeholderContainer = document.getElementById("placeholder-container");
-const resetContainer = document.getElementById("reset-container");
 
+const resetContainer = document.getElementById("reset-container");
 const resetKey = document.getElementById("reset-button");
 const resultText = document.getElementById("result-text");
 
@@ -33,8 +33,7 @@ const backToSettings = () => {
     startMenu.classList.remove("hide");
     resumeButton.classList.remove("hide");
     menuButton.classList.add("hide");
-    resetKey.classList.add("hide");
-    resultText.classList.add("hide");
+    resetContainer.classList.add("hide");
 }
 const getSolution = (lang, amount) => {
     fetch(`./wordlists/solutions-${lang}.json`)
@@ -53,6 +52,7 @@ const getSolution = (lang, amount) => {
 
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
+        console.log(solution);
     })
 }
 const resetAll = () => {
