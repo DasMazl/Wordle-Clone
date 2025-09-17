@@ -52,7 +52,6 @@ const getSolution = (lang, amount) => {
 
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
-        console.log(solution);
     })
 }
 const resetAll = () => {
