@@ -53,6 +53,7 @@ const getSolution = (lang, amount) => {
 
         let randomIndex = Math.round(Math.random() * (filteredList.length - 1));
         solution = filteredList[randomIndex];
+        console.log(solution);
     })
 }
 const resetAll = () => {
@@ -312,10 +313,12 @@ async function testEntry() {
     })
     if(count === selectedAmount){
         successScreen();
+        removeFocus();
         return;
     } else {
         if(focus[0] === columns){
             lostScreen();
+            removeFocus();
             return;
         }
         removeFocus();

@@ -255,8 +255,8 @@ div.placeholder.focus {
 }
 
 div.placeholder.wrong {
-    border: 2px solid var(--wrong-color);
-    color: hsl(from var(--wrong-color) h s 60);
+    border: 2px solid var(--wrong-color) !important;
+    color: hsl(from var(--wrong-color) h s 60) !important;
 }
 div.key.wrong {
     border: 2px solid hsl(from var(--wrong-color) h 0 90);
@@ -264,8 +264,8 @@ div.key.wrong {
     color: hsl(from var(--text-base) h s 0);
 }
 div.placeholder.hit {
-    border: 2px solid var(--hit-color);
-    color: hsl(from var(--hit-color) h 40 90);
+    border: 2px solid var(--hit-color) !important;
+    color: hsl(from var(--hit-color) h 40 90) !important;
 }
 div.key.hit {
     border: 2px solid hsl(from var(--hit-color) h 100 90);
@@ -273,8 +273,8 @@ div.key.hit {
     color: black;
 }
 div.placeholder.success {
-    border: 2px solid var(--success-color);
-    color: hsl(from var(--success-color) h 40 90);
+    border: 2px solid var(--success-color) !important;
+    color: hsl(from var(--success-color) h 40 90) !important;
 }
 div.key.success {
     border: 2px solid hsl(from var(--success-color) h 100 60);
