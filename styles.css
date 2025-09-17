@@ -81,10 +81,7 @@ h1 {
     transition: all 0.2s ease;
 }
 
-#back-to-menu:hover {
-    background-color: var(--bg-keys);
-    cursor: pointer;
-}
+
 
 div#game-menu {
     margin-top: 4rem;
@@ -118,12 +115,6 @@ div.lang-button.selected {
     transform: scale(1.1);
     opacity: 1;
 }
-
-div.lang-button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
-}
-
 
 div.setting{
     width: 100%;
@@ -198,10 +189,6 @@ div.arrow-selector{
     top: calc(50% - 30px);
     fill: hsl(159, 15%, 34%);
     transition: all 0.2s ease;
-}
-
-div.arrow-selector:hover{
-    fill: hsl(159, 15%, 80%);
 }
 
 div.arrow-selector.left{
@@ -330,11 +317,7 @@ div.key {
     transition: all 0.2s ease;
 }
 
-div.key:hover, div.enter:hover, div.back:hover, .start-button:hover {
-    filter: brightness(0.8);
-    cursor: pointer;
-    transform: scale(1.1);
-}
+
 
 div.enter, div.back {
     width: 80px;
@@ -385,10 +368,30 @@ div.reset {
     transition: all 0.2s ease;
 }
 
-#reset-button:hover {
-    background-color: hsl(from var(--bg-keys) h s 0);
-    cursor: pointer;
-    transform: scale(1.1);
+
+@media (width > 720px) {
+    #back-to-menu:hover {
+        background-color: var(--bg-keys);
+        cursor: pointer;
+    }
+    div.lang-button:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+    div.arrow-selector:hover{
+        fill: hsl(159, 15%, 80%);
+    }
+    div.key:hover, div.enter:hover, div.back:hover, .start-button:hover {
+        filter: brightness(0.8);
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+    #reset-button:hover {
+        background-color: hsl(from var(--bg-keys) h s 0);
+        cursor: pointer;
+        transform: scale(1.1);
+    }
 }
 
 @media (width < 720px) {
